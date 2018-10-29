@@ -192,7 +192,114 @@ var EJS = {
 					return Ext.util.Format.date(value, 'M-d-Y');
 				}
 			}
-		}
+		},
+
+		/**
+		 * A function to get grid component
+		 *
+		 * Sample usage:
+		 * EJS.grid.get('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {Component}           [description]
+		 */
+		get: function(reference) {
+			return this.component.reference('grid', reference);
+		},
+
+		/**
+		 * A function to setup grid with a store data
+		 *
+		 * Sample usage:
+		 * EJS.grid.setup('reference', 'url', { key: value })
+		 * 
+		 * @param  {String} reference [description]
+		 * @param  {String} storeUrl  [description]
+		 * @param  {Object} filters   [description]
+		 * @return {[type]}           [description]
+		 */
+		setup: function(reference, storeUrl, filters = {}) {
+			var grid = this.grid.get(reference),
+				paging = grid.down('pagingtoolbar'),
+				store = this.store.create(storeUrl, filters, grid);
+
+			grid.bindStore(store);
+			if(paging) paging.bindStore(store);
+		},
+
+		/**
+		 * A function to empty store data of a grid
+		 *
+		 * Sample usage:
+		 * EJS.grid.empty('reference')
+		 * 
+		 * @param  {[type]} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		empty: function(reference) {
+			var grid = this.grid.get(reference),
+				paging = grid.down('pagingtoolbar');
+
+			if(!grid.getStore().blockLoadCounter) {
+				grid.getStore.loadData([], false);
+				if(paging) paging.bindStore([], false);
+			}
+		},
+
+		/**
+		 * A function to get selected record on a grid
+		 *
+		 * Sample usage:
+		 * EJS.grid.getSelection('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		getSelection: function(reference) {
+			return this.grid.get(reference).getSelectionModel().getLastSelected();
+		},
+
+		/**
+		 * A function to clear record selections on a grid
+		 *
+		 * Sample usage:
+		 * EJS.grid.clearSelection('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		clearSelection: function(reference) {
+			var grid = this.grid.get(reference);
+
+			grid.getSelectionModel().deselectAll();
+			grid.getSelectionModel().clearSelections();
+		},
+
+		/**
+		 * A function to get store of a grid via its reference
+		 *
+		 * Sample usage:
+		 * EJS.grid.getStore('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		getStore: function(reference) {
+			return this.grid.get(reference).getStore();
+		},
+
+		/**
+		 * A function to reload grid store
+		 *
+		 * Sample usage:
+		 * EJS.grid.reload('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		reload: function(reference) {
+			this.grid.get(reference).getStore().load();
+		} 
 	},
 
 	/** @type {Object} A wrapper for renderer related functions */
