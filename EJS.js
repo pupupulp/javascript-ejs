@@ -352,6 +352,15 @@ var EJS = {
 
 	/** @type {Object} A wrapper for URL related functions */
 	url = {
+		/**
+		 * A function to convert object params as query for url params
+		 *
+		 * Sample usage:
+		 * EJS.url.covertObjectToQuery({ key: value })
+		 * 
+		 * @param  {Object} params [description]
+		 * @return {string}        [description]
+		 */
 		convertObjectToQuery: function(params) {
 			var query = "";
 
@@ -367,11 +376,20 @@ var EJS = {
 	task = {
 		/**
 		 * A function to create new delayed task that executes a callback function
+		 *
+		 * Sample usage:
+		 * EJS.task.create(function task() {})
+		 * 
 		 * @param  {Function} callback [description]
 		 * @return {[type]}            [description]
 		 */
 		create: function(callback) {
 			return new Ext.util.DelayedTask(callback);
 		}
+	},
+
+	/** @type {Object} A wrapper for store related functions */
+	store = {
+
 	}
 }
