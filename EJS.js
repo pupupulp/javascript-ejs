@@ -4,19 +4,15 @@
  *
  * Feel free to add more wrappers under categories provided or make another one
  * if the functionality requires.
+ *
+ * Applied to ExtJS v6.*
  */
 
 
-/**
- * A namespace EJS would be used for this project
- * @type {Object}
- */
+/** @type {Object} A namespace EJS would be used for this project */
 var EJS = {
 	
-	/**
-	 * A wrapper component related functions 
-	 * @type {Object}
-	 */
+	/** @type {Object} A wrapper for component related functions */
 	component = {
 		/**
 		 * A function to query a component
@@ -46,5 +42,46 @@ var EJS = {
 		}
 	},
 
+	/** @type {Object} A wrapper for grid component related functions */
+	grid = {
+		/** @type {Object} Renderer object for grid components */
+		render = {
+			/**
+			 * A function to render qTip on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.qTip()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			qTip: function() {
+				return function(value, meta) {
+					meta.tdAttr = 'data-qtip = "' + value + '"';
+					return value;
+				}
+			},
+
+			/**
+			 * A function to render check column on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.checkColumn()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			checkColumn: function() {
+				return function(value, meta) {
+					meta.tdAttr = 'data-qtip = "' + (value == 1 ? 'Yes' : 'No') + '"';
+
+					var cssPrefix = Ext.baseCSSPrefix,
+						cssClass = cssPrefix + 'grid-checkcolumn';
+
+					if(value == 1) cssClass += ' ' + cssPrefix + 'grid-checkcolumn-checked';
+
+					return '<div class="' + cssClass + '" role="button" tabIndex="0"></div>';
+				}
+			}
+		}
+	}
 
 }
