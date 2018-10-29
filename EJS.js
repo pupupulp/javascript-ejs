@@ -195,6 +195,7 @@ var EJS = {
 		}
 	},
 
+	/** @type {Object} A wrapper for renderer related functions */
 	render = {
 		/**
 		 * A function to render default value
@@ -311,6 +312,33 @@ var EJS = {
 			format = format ? format : 'm-d-Y';
 			return Ext.util.Format.date(value, format);
 		}
-	}
+	},
 
+	/** @type {Object} A wrapper for ajax related functions */
+	ajax = {
+		/**
+		 * A function to handle ajax requests
+		 * @param  {string}  url             [description]
+		 * @param  {string}  method          [description]
+		 * @param  {Object}  params          [description]
+		 * @param  {function}  sucessCallback  [description]
+		 * @param  {function}  failureCallback [description]
+		 * @param  {Boolean} async           [description]
+		 * @return {[type]}                  [description]
+		 */
+		request: function(url, method, params, sucessCallback, failureCallback, async = true) {
+			return Ext.Ajax.request({
+				async: async,
+				url: url,
+				method: method,
+				params: params,
+				success: function(response) {
+					callback(Ext.decode(reponse.responseText));
+				},
+				failure: function(response){
+					failureCallback();
+				}
+			});
+		}
+	}
 }
