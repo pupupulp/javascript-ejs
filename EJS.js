@@ -13,6 +13,38 @@
  */
 var EJS = {
 	
-	
+	/**
+	 * A wrapper component related functions 
+	 * @type {Object}
+	 */
+	component = {
+		/**
+		 * A function to query a component
+		 *
+		 * Sample usage :
+		 * EJS.component.query('button[property = value]')
+		 * 
+		 * @param  {string} queryString [description]
+		 * @return {component}             [description]
+		 */
+		query: function(queryString) {
+			return Ext.ComponentQuery.query(queryString)[0];
+		},
+
+		/**
+		 * A function to query a componet via its reference property
+		 *
+		 * Sample usage :
+		 * EJS.component.reference('button', 'button-reference-value')
+		 * 
+		 * @param  {string} component [description]
+		 * @param  {string} reference [description]
+		 * @return {component}           [description]
+		 */
+		reference: function(component, reference) {
+			return Ext.Component.query(component + '[reference = ' + reference + ']')[0];
+		}
+	},
+
 
 }
