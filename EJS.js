@@ -318,6 +318,14 @@ var EJS = {
 	ajax = {
 		/**
 		 * A function to handle ajax requests
+		 *
+		 * Sample usage:
+		 * EJS.ajax.request('url', 'GET', {
+		 * 	key: value
+		 * }, function success(){
+		 * }, function fail() {
+		 * }, true)
+		 * 
 		 * @param  {string}  url             [description]
 		 * @param  {string}  method          [description]
 		 * @param  {Object}  params          [description]
@@ -339,6 +347,19 @@ var EJS = {
 					failureCallback();
 				}
 			});
+		}
+	},
+
+	/** @type {Object} A wrapper for URL related functions */
+	url = {
+		convertObjectToQuery: function(params) {
+			var query = "";
+
+			Ext.object.each(params, function(key, value) {
+				query += encodeURIComponent(key)+'='+encodeURIComponent(value)+'&';
+			});
+
+			return query;
 		}
 	}
 }
