@@ -418,7 +418,7 @@ var EJS = {
 					metachange: function(store, meta) {
 						store.fields = meta.fields;
 					},
-					load: function(store, recprds, success) {
+					load: function(store, records, success) {
 						var message = '<center>Failed to load store data.</center>';
 
 						if(component != undefined) {
@@ -446,6 +446,10 @@ var EJS = {
 
 		/**
 		 * A function to create a tree based store
+		 * 
+		 * Sample usage:
+		 * EJS.store.tree('url', { key: value }, component, true, true)
+		 * 
 		 * @param  {String}  url         [description]
 		 * @param  {Object}  extraParams [description]
 		 * @param  {Component}  component   [description]
@@ -469,12 +473,26 @@ var EJS = {
 					expandable: false,
 				},
 				autoLoad: autoLoad,
-				folderSort: folderSort
+				folderSort: folderSort,
+				listeners: {
+					load: function(store, records, success) {
+						var message = '<center>Failed to load store data.</center>';
+
+						if(component != undefined) {
+							if(!success) return component.mask(message);
+							else component.unmask();
+						} else return;
+					}
+				}
 			});
 		},
 
 		/**
 		 * A function to create a store via defined records
+		 *
+		 * Sample usage:
+		 * EJS.store.local([])
+		 * 
 		 * @param  {Array} records [description]
 		 * @return {Store}         [description]
 		 */
@@ -486,7 +504,32 @@ var EJS = {
 				data: records
 			});
 		},
+	},
 
-		
+	/** @type {Object} A wrapper for window body related functions */
+	body = {
+		/**
+		 * A function to get window body's height
+		 *
+		 * Sample usage:
+		 * EJS.body.windowHeight()
+		 * 
+		 * @return {Number} [description]
+		 */
+		windowHeight: function() {
+			return Ext.getBody().getViewSize().height;
+		}
+
+		/**
+		 * A function to get window body's width
+		 *
+		 * Sample usage:
+		 * EJS.body.windowWidth()
+		 * 
+		 * @return {Number} [description]
+		 */
+		windowWidth: function() {
+			return Ext.getBody().getViewSize().width;
+		}
 	}
 }
