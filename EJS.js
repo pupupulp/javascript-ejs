@@ -460,6 +460,48 @@ var EJS = {
 		}
 	},
 
+	/** @type {Object} Sub-namespace for button component related functions */
+	button = {
+		/**
+		 * A function to get button component
+		 *
+		 * Sample usage:
+		 * EJS.button.get('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		get: function(reference) {
+			return this.component.reference('button', reference);
+		},
+
+		/**
+		 * A function to disable button via reference
+		 *
+		 * Sample usage:
+		 * EJS.button.disable('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		disable: function(reference) {
+			this.button.get(reference).setDisabled(true);
+		},
+
+		/**
+		 * A function to enable button via reference
+		 *
+		 * Sample usage:
+		 * EJS.button.enable('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		enable: function(reference) {
+			this.button.get(reference).setDisabled(false);
+		}
+	}
+
 	/** @type {Object} Sub-namespace for renderer related functions */
 	render = {
 		/**
