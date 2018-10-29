@@ -20,8 +20,8 @@ var EJS = {
 		 * Sample usage :
 		 * EJS.component.query('button[property = value]')
 		 * 
-		 * @param  {string} queryString [description]
-		 * @return {component}             [description]
+		 * @param  {String} queryString [description]
+		 * @return {Component}             [description]
 		 */
 		query: function(queryString) {
 			return Ext.ComponentQuery.query(queryString)[0];
@@ -33,9 +33,9 @@ var EJS = {
 		 * Sample usage :
 		 * EJS.component.reference('button', 'button-reference-value')
 		 * 
-		 * @param  {string} component [description]
-		 * @param  {string} reference [description]
-		 * @return {component}           [description]
+		 * @param  {String} component [description]
+		 * @param  {String} reference [description]
+		 * @return {Component}           [description]
 		 */
 		reference: function(component, reference) {
 			return Ext.Component.query(component + '[reference = ' + reference + ']')[0];
@@ -215,8 +215,8 @@ var EJS = {
 		 * Sample usage :
 		 * renderer: EJS.render.yesNo()
 		 * 
-		 * @param {int} value [description]
-		 * @return {string} [description]
+		 * @param {Number} value [description]
+		 * @return {String} [description]
 		 */
 		yesNo: function(value) {
 			return value == 1 ? 'Yes' : 'No';
@@ -228,11 +228,10 @@ var EJS = {
 		 * Sample usage :
 		 * renderer: EJS.render.currency()
 		 * 
-		 * @param {numeric} value [description]
-		 * @return {numeric} [description]
+		 * @param {Number} value [description]
+		 * @return {Number} [description]
 		 */
-		currency: function(value) {
-			value = value ? value : 0;
+		currency: function(value = 0) {
 			return Ext.util.Format.currency(value, ' ', 2, false);
 		},
 
@@ -242,11 +241,10 @@ var EJS = {
 		 * Sample usage :
 		 * renderer: EJS.render.accurate()
 		 * 
-		 * @param {numeric} value [description]
-		 * @return {numeric} [description]
+		 * @param {Number} value [description]
+		 * @return {Number} [description]
 		 */
-		accurate: function(value) {
-			value = value ? value : 0;
+		accurate: function(value = 0) {
 			return Ext.util.Format.number(value, '0,0.00##########');
 		},
 
@@ -256,8 +254,8 @@ var EJS = {
 		 * Sample usage :
 		 * renderer: EJS.render.fullDate()
 		 * 
-		 * @param {date} value [description]
-		 * @return {date}        [description]
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
 		 */
 		fullDate: function(value) {
 			return Ext.util.Format.date(value, 'F d, Y');
@@ -269,8 +267,8 @@ var EJS = {
 		 * Sample usage :
 		 * renderer: EJS.render.YMDDate()
 		 * 
-		 * @param {date} value [description]
-		 * @return {date}        [description]
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
 		 */
 		YMDDate: function(value) {
 			return Ext.util.Format.date(value, 'Y-m-d');
@@ -282,8 +280,8 @@ var EJS = {
 		 * Sample usage :
 		 * renderer: EJS.render.DMYDate()
 		 * 
-		 * @param {date} value [description]
-		 * @return {date}        [description]
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
 		 */
 		DMYDate: function(value) {
 			return Ext.util.Format.date(value, 'd-m-Y');
@@ -295,8 +293,8 @@ var EJS = {
 		 * Sample usage :
 		 * renderer: EJS.render.MDYDate()
 		 * 
-		 * @param {date} value [description]
-		 * @return {date}        [description]
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
 		 */
 		MDYDate: function(value) {
 			return Ext.util.Format.date(value, 'm-d-Y');
@@ -304,12 +302,11 @@ var EJS = {
 
 		/**
 		 * A function to render date on a specified format
-		 * @param  {date} value  [description]
-		 * @param  {string} format [description]
-		 * @return {date}        [description]
+		 * @param  {Date} value  [description]
+		 * @param  {String} format [description]
+		 * @return {Date}        [description]
 		 */
-		formatDate: function(value, format) {
-			format = format ? format : 'm-d-Y';
+		formatDate: function(value, format = 'm-d-Y') {
 			return Ext.util.Format.date(value, format);
 		}
 	},
@@ -320,14 +317,10 @@ var EJS = {
 		 * A function to handle ajax requests
 		 *
 		 * Sample usage:
-		 * EJS.ajax.request('url', 'GET', {
-		 * 	key: value
-		 * }, function success(){
-		 * }, function fail() {
-		 * }, true)
+		 * EJS.ajax.request('url', 'GET', { key: value }, function success(){}, function fail() {}, true)
 		 * 
-		 * @param  {string}  url             [description]
-		 * @param  {string}  method          [description]
+		 * @param  {String}  url             [description]
+		 * @param  {String}  method          [description]
 		 * @param  {Object}  params          [description]
 		 * @param  {Function}  sucessCallback  [description]
 		 * @param  {Function}  failureCallback [description]
@@ -359,7 +352,7 @@ var EJS = {
 		 * EJS.url.covertObjectToQuery({ key: value })
 		 * 
 		 * @param  {Object} params [description]
-		 * @return {string}        [description]
+		 * @return {String}        [description]
 		 */
 		convertObjectToQuery: function(params) {
 			var query = "";
@@ -390,6 +383,66 @@ var EJS = {
 
 	/** @type {Object} A wrapper for store related functions */
 	store = {
+		/**
+		 * A function to create a store
+		 *
+		 * Sample usage:
+		 * EJS.store.create('url', { key: value }, component, true, 25)
+		 * 
+		 * @param  {String}  url         [description]
+		 * @param  {Object}  extraParams [description]
+		 * @param  {Component}  component   [description]
+		 * @param  {Boolean} autoLoad    [description]
+		 * @param  {Number}  pageSize    [description]
+		 * @return {[type]}              [description]
+		 */
+		create: function(url, extraParams = {}, component, autoLoad = true, pageSize = 25) {
+			if(!url) return;
+
+			return new Ext.data.Store({
+				fields: [],
+				proxy: {
+					extraParams: extraParams,
+					url: url,
+					type: 'ajax',
+					reader: {
+						type: 'json',
+						rootProperty: 'data',
+						totalProperty: 'total'
+					}
+				},
+				pageSize: pageSize,
+				autoLoad: autoLoad,
+				autoDestroy: true,
+				listeners: {
+					metachange: function(store, meta) {
+						store.fields = meta.fields;
+					},
+					load: function(store, recprds, success) {
+						var message = '<center>Failed to load store data.</center>';
+
+						if(component != undefined) {
+							if(!success) return component.mask(message);
+							else component.unmask();
+						} else return;
+
+						if(store.getTotalCount() <= 0 ||
+							!Ext.isDefined(component.value)) return;
+
+						if(!Ext.Array.contains(store.getFields(), 'is_default')) return;
+						else {
+							var index = store.findExact('is_default', '1');
+
+							if(index < 0) return;
+							else {
+								var value = store.getAt(index).get('id');
+								component.setValue(value);
+							}
+						}
+					}
+				}
+			});
+		},
 
 	}
 }
