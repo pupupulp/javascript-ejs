@@ -444,5 +444,33 @@ var EJS = {
 			});
 		},
 
+		/**
+		 * A function to create a tree based store
+		 * @param  {String}  url         [description]
+		 * @param  {Object}  extraParams [description]
+		 * @param  {Component}  component   [description]
+		 * @param  {Boolean} autoLoad    [description]
+		 * @param  {Boolean} folderSort  [description]
+		 * @return {[type]}              [description]
+		 */
+		tree: function(url, extraParams = {}, component, autoLoad = true, folderSort = true) {
+			return new Ext.data.TreeStore({
+				proxy: {
+					extraParams: extraParams,
+					url: url,
+					type: 'ajax',
+					reader: {
+						type: 'json',
+						root: 'children'
+					}
+				},
+				root: {
+					text: '.',
+					expandable: false,
+				},
+				autoLoad: autoLoad,
+				folderSort: folderSort
+			});
+		},
 	}
 }
