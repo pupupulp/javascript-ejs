@@ -1,2 +1,2 @@
 # javascript-ejs
-A library/package for useful ExtJS code wrappers
+An opensource library/package for useful ExtJS code wrappers
