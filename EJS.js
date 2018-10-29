@@ -329,8 +329,8 @@ var EJS = {
 		 * @param  {string}  url             [description]
 		 * @param  {string}  method          [description]
 		 * @param  {Object}  params          [description]
-		 * @param  {function}  sucessCallback  [description]
-		 * @param  {function}  failureCallback [description]
+		 * @param  {Function}  sucessCallback  [description]
+		 * @param  {Function}  failureCallback [description]
 		 * @param  {Boolean} async           [description]
 		 * @return {[type]}                  [description]
 		 */
@@ -360,6 +360,18 @@ var EJS = {
 			});
 
 			return query;
+		}
+	},
+
+	/** @type {Object} A wrapper for tasks related functions */
+	task = {
+		/**
+		 * A function to create new delayed task that executes a callback function
+		 * @param  {Function} callback [description]
+		 * @return {[type]}            [description]
+		 */
+		create: function(callback) {
+			return new Ext.util.DelayedTask(callback);
 		}
 	}
 }
