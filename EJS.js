@@ -9,10 +9,10 @@
  */
 
 
-/** @type {Object} A namespace EJS would be used for this project */
+/** @type {Object} Main namespace for the package/library */
 var EJS = {
 	
-	/** @type {Object} A wrapper for component related functions */
+	/** @type {Object} Sub-namespace for component related functions */
 	component = {
 		/**
 		 * A function to query a component
@@ -42,7 +42,7 @@ var EJS = {
 		}
 	},
 
-	/** @type {Object} A wrapper for grid component related functions */
+	/** @type {Object} Sub-namespace for grid component related functions */
 	grid = {
 		/** @type {Object} Renderer object for grid components */
 		render = {
@@ -302,7 +302,55 @@ var EJS = {
 		} 
 	},
 
-	/** @type {Object} A wrapper for renderer related functions */
+	/** @type {Object} Sub-namespace for combobox component related functions */
+	combobox = {
+		/**
+		 * A function to get combobox component
+		 *
+		 * Sample usage:
+		 * EJS.combobox.get('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {Component}           [description]
+		 */
+		get: function(reference) {
+			return this.component.reference('combobox', reference);
+		},
+
+		/**
+		 * A function to setup combobox with store data
+		 *
+		 * Sample usage:
+		 * EJS.combobox.setup('reference', 'url', { key: value })
+		 * 
+		 * @param  {String} reference [description]
+		 * @param  {String} storeUrl  [description]
+		 * @param  {Object} filters   [description]
+		 * @return {[type]}           [description]
+		 */
+		setup: function(reference, storeUrl, filters = {}) {
+			var combobox = this.combobox.get(reference),
+				store = this.store.create(storeUrl, filters, combobox);
+
+			combobox.bindStore(store);
+		},
+
+		/**
+		 * A function to get a record via id from combobox store
+		 *
+		 * Sample usage:
+		 * EJS.combobox.getRecordById('reference', 2)
+		 * 
+		 * @param  {String} reference [description]
+		 * @param  {Number} id        [description]
+		 * @return {[type]}           [description]
+		 */
+		getRecordById: function(reference, id) {
+			return this.combobox.get(reference).findRecord('id', id);
+		}
+	}
+
+	/** @type {Object} Sub-namespace for renderer related functions */
 	render = {
 		/**
 		 * A function to render default value
@@ -418,7 +466,7 @@ var EJS = {
 		}
 	},
 
-	/** @type {Object} A wrapper for ajax related functions */
+	/** @type {Object} Sub-namespace for ajax related functions */
 	ajax = {
 		/**
 		 * A function to handle ajax requests
@@ -450,7 +498,7 @@ var EJS = {
 		}
 	},
 
-	/** @type {Object} A wrapper for URL related functions */
+	/** @type {Object} Sub-namespace for URL related functions */
 	url = {
 		/**
 		 * A function to convert object params as query for url params
@@ -472,7 +520,7 @@ var EJS = {
 		}
 	},
 
-	/** @type {Object} A wrapper for tasks related functions */
+	/** @type {Object} Sub-namespace for tasks related functions */
 	task = {
 		/**
 		 * A function to create new delayed task that executes a callback function
@@ -488,7 +536,7 @@ var EJS = {
 		}
 	},
 
-	/** @type {Object} A wrapper for store related functions */
+	/** @type {Object} Sub-namespace for store related functions */
 	store = {
 		/**
 		 * A function to create a store
@@ -613,7 +661,7 @@ var EJS = {
 		},
 	},
 
-	/** @type {Object} A wrapper for window body related functions */
+	/** @type {Object} Sub-namespace for window body related functions */
 	body = {
 		/**
 		 * A function to get window body's height
