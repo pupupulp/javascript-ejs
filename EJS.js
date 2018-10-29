@@ -451,7 +451,7 @@ var EJS = {
 		 * @param  {Component}  component   [description]
 		 * @param  {Boolean} autoLoad    [description]
 		 * @param  {Boolean} folderSort  [description]
-		 * @return {[type]}              [description]
+		 * @return {Store}              [description]
 		 */
 		tree: function(url, extraParams = {}, component, autoLoad = true, folderSort = true) {
 			return new Ext.data.TreeStore({
@@ -472,5 +472,21 @@ var EJS = {
 				folderSort: folderSort
 			});
 		},
+
+		/**
+		 * A function to create a store via defined records
+		 * @param  {Array} records [description]
+		 * @return {Store}         [description]
+		 */
+		local: function(records) {
+			var keys = Object.keys(records[0]);
+
+			return Ext.create('Ext.data.Store', {
+				fields: keys,
+				data: records
+			});
+		},
+
+		
 	}
 }
