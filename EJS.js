@@ -47,6 +47,20 @@ var EJS = {
 		/** @type {Object} Renderer object for grid components */
 		render = {
 			/**
+			 * A function to render default value on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.default()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			default: function() {
+				return function(value) {
+					return value;
+				}
+			},
+
+			/**
 			 * A function to render qTip on a grid cell
 			 *
 			 * Sample usage :
@@ -80,8 +94,109 @@ var EJS = {
 
 					return '<div class="' + cssClass + '" role="button" tabIndex="0"></div>';
 				}
+			},
+
+			/**
+			 * A function to render yes or no on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.yesNo()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			yesNo: function() {
+				return function(value, meta) {
+					return value == 1 ? 'Yes' : 'No';
+				}
+			},
+
+			/**
+			 * A function to render numeric value as currency on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.currency()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			currency: function() {
+				return function(value) {
+					value = value ? value : 0;
+					return Ext.util.Format.currency(value, ' ', 2, false);
+				}
+			},
+
+			/**
+			 * A function to render accurate numeric decimals on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.accurate()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			accurate: function() {
+				return function(value) {
+					value = value ? value : 0;
+					return Ext.util.Format.number(value, '0,0.00##########');
+				}
+			}
+
+			/**
+			 * A function to render full date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.fullDate()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			fullDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'F d, Y');
+				}
+			}
+
+			/**
+			 * A function to render year month day date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.YMDDate()
+			 * 
+			 */
+			YMDDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'Y-M-d');
+				}
+			}
+
+			/**
+			 * A function to render day month year date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.DMYDate()
+			 * 
+			 */
+			DMYDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'd-M-Y');
+				}
+			}
+
+			/**
+			 * A function to render month day year date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.MDYDate()
+			 * 
+			 */
+			MDYDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'M-d-Y');
+				}
 			}
 		}
+	},
+
+	render = {
+
 	}
 
 }
