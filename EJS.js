@@ -812,4 +812,31 @@ EJS.prototype = {
 			});
 		},
 	},
+
+	/** @type {Object} Sub-namespace for window body related functions */
+	window: {
+		/**
+		 * A function to get window body's height
+		 *
+		 * Sample usage:
+		 * EJS.window.getHeight()
+		 * 
+		 * @return {Number} [description]
+		 */
+		getHeight: function() {
+			return Ext.getBody().getViewSize().height;
+		}
+
+		/**
+		 * A function to get window body's width
+		 *
+		 * Sample usage:
+		 * EJS.window.getWidth()
+		 * 
+		 * @return {Number} [description]
+		 */
+		getWidth: function() {
+			return Ext.getBody().getViewSize().width;
+		}
+	}
 }
