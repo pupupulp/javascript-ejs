@@ -41,9 +41,266 @@ EJS.prototype = {
 			return Ext.Component.query(component + '[reference = ' + reference + ']')[0];
 		}
 	},
-	
+
 	/** @type {Object} Sub-namespace for grid component related functions */
 	grid: {
+		/** @type {Object} Renderer object for grid components */
+		render: {
+			/**
+			 * A function to render default value on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.default()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			default: function() {
+				return function(value) {
+					return value;
+				}
+			},
 
-	}
+			/**
+			 * A function to render qTip on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.qTip()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			qTip: function() {
+				return function(value, meta) {
+					meta.tdAttr = 'data-qtip = "' + value + '"';
+					return value;
+				}
+			},
+
+			/**
+			 * A function to render check column on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.checkColumn()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			checkColumn: function() {
+				return function(value, meta) {
+					meta.tdAttr = 'data-qtip = "' + (value == 1 ? 'Yes' : 'No') + '"';
+
+					var cssPrefix = Ext.baseCSSPrefix,
+						cssClass = cssPrefix + 'grid-checkcolumn';
+
+					if(value == 1) cssClass += ' ' + cssPrefix + 'grid-checkcolumn-checked';
+
+					return '<div class="' + cssClass + '" role="button" tabIndex="0"></div>';
+				}
+			},
+
+			/**
+			 * A function to render yes or no on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.yesNo()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			yesNo: function() {
+				return function(value, meta) {
+					return value == 1 ? 'Yes' : 'No';
+				}
+			},
+
+			/**
+			 * A function to render numeric value as currency on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.currency()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			currency: function() {
+				return function(value) {
+					value = value ? value : 0;
+					return Ext.util.Format.currency(value, ' ', 2, false);
+				}
+			},
+
+			/**
+			 * A function to render accurate numeric decimals on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.accurate()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			accurate: function() {
+				return function(value) {
+					value = value ? value : 0;
+					return Ext.util.Format.number(value, '0,0.00##########');
+				}
+			},
+
+			/**
+			 * A function to render full date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.fullDate()
+			 * 
+			 * @return {[type]} [description]
+			 */
+			fullDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'F d, Y');
+				}
+			},
+
+			/**
+			 * A function to render year month day date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.YMDDate()
+			 * 
+			 */
+			YMDDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'Y-M-d');
+				}
+			},
+
+			/**
+			 * A function to render day month year date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.DMYDate()
+			 * 
+			 */
+			DMYDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'd-M-Y');
+				}
+			},
+
+			/**
+			 * A function to render month day year date format on a grid cell
+			 *
+			 * Sample usage :
+			 * renderer: EJS.grid.render.MDYDate()
+			 * 
+			 */
+			MDYDate: function() {
+				return function(value) {
+					return Ext.util.Format.date(value, 'M-d-Y');
+				}
+			}
+		},
+
+		/**
+		 * A function to get grid component
+		 *
+		 * Sample usage:
+		 * EJS.grid.get('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {Component}           [description]
+		 */
+		get: function(reference) {
+			return this.component.reference('grid', reference);
+		},
+
+		/**
+		 * A function to setup grid with a store data
+		 *
+		 * Sample usage:
+		 * EJS.grid.setup('reference', 'url', { key: value })
+		 * 
+		 * @param  {String} reference [description]
+		 * @param  {String} storeUrl  [description]
+		 * @param  {Object} filters   [description]
+		 * @return {[type]}           [description]
+		 */
+		setup: function(reference, storeUrl, filters = {}) {
+			var grid = this.grid.get(reference),
+				paging = grid.down('pagingtoolbar'),
+				store = this.store.create(storeUrl, filters, grid);
+
+			grid.bindStore(store);
+			if(paging) paging.bindStore(store);
+		},
+
+		/**
+		 * A function to empty store data of a grid
+		 *
+		 * Sample usage:
+		 * EJS.grid.clear('reference')
+		 * 
+		 * @param  {[type]} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		clear: function(reference) {
+			var grid = this.grid.get(reference),
+				paging = grid.down('pagingtoolbar');
+
+			if(!grid.getStore().blockLoadCounter) {
+				grid.getStore.loadData([], false);
+				if(paging) paging.bindStore([], false);
+			}
+		},
+
+		/**
+		 * A function to get selected record on a grid
+		 *
+		 * Sample usage:
+		 * EJS.grid.getSelection('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		getSelection: function(reference) {
+			return this.grid.get(reference).getSelectionModel().getLastSelected();
+		},
+
+		/**
+		 * A function to clear record selections on a grid
+		 *
+		 * Sample usage:
+		 * EJS.grid.clearSelection('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		clearSelection: function(reference) {
+			var grid = this.grid.get(reference);
+
+			grid.getSelectionModel().deselectAll();
+			grid.getSelectionModel().clearSelections();
+		},
+
+		/**
+		 * A function to get store of a grid via its reference
+		 *
+		 * Sample usage:
+		 * EJS.grid.getStore('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		getStore: function(reference) {
+			return this.grid.get(reference).getStore();
+		},
+
+		/**
+		 * A function to reload grid store
+		 *
+		 * Sample usage:
+		 * EJS.grid.reload('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		reload: function(reference) {
+			this.grid.get(reference).getStore().load();
+		} 
+	},
+
+	
 }
