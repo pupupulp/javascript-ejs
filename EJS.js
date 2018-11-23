@@ -350,5 +350,115 @@ EJS.prototype = {
 		},
 	},
 
+	/** @type {Object} Sub-namespace for form component related functions */
+	form: {
+		/**
+		 * A function to get form component
+		 *
+		 * Sample usage:
+		 * EJS.form.get('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		get: function(reference) {
+			return this.component.reference('form', reference).getForm();
+		},
+
+		/**
+		 * A function to get form values
+		 *
+		 * Sample usage:
+		 * EJS.form.getValues('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		getValues: function(reference) {
+			return this.form.get(reference).getValues();
+		},
+
+		/**
+		 * A function to load record to form
+		 *
+		 * Sample usage:
+		 * EJS.form.loadRecord('reference', [])
+		 * 
+		 * @param  {String} reference [description]
+		 * @param  {Array} record    [description]
+		 * @return {[type]}           [description]
+		 */
+		loadRecord: function(reference, record) {
+			this.form.get(reference).loadRecord(record);
+		},
+
+		/**
+		 * A function to set form fields to read only
+		 *
+		 * Sample usage:
+		 * EJS.form.setReadOnly('reference', true)
+		 * 
+		 * @param {String}  reference  [description]
+		 * @param {Boolean} isReadOnly [description]
+		 */
+		setReadOnly: function(reference, isReadOnly) {
+			this.form.get(reference).getFields().each(function(field) {
+				field.setReadOnly(isReadOnly);
+			});
+		},
+
+		/**
+		 * A function to clear/reset form
+		 *
+		 * Sample usage:
+		 * EJS.form.clear('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		clear: function(reference) {
+			this.form.get(reference).reset();
+		},
+
+		/**
+		 * A function to check if form is valid
+		 *
+		 * Sample usage:
+		 * EJS.form.isValid('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {[type]}           [description]
+		 */
+		isValid(): function(reference) {
+			this.form.get(reference).isValid();
+		}
+
+		/**
+		 * A function to get invalid form fields
+		 *
+		 * Sample usage:
+		 * EJS.form.getInvalidFields('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {Array}           [description]
+		 */
+		getInvalidFields: function(reference) {
+			var invalidFields = [];
+
+			Ext.suspendLayouts();
+
+			this.form.get(reference).getFields().filterBy(function(field) {
+				if(field.validate()) return;
+				else {
+					invalidFields.push(field.fieldLabel);
+				}
+			});
+
+			Ext.resumeLayouts(true);
+
+			return invalidFields;
+		}
+	},
+
 	
 }
