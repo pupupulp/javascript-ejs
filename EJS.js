@@ -302,5 +302,53 @@ EJS.prototype = {
 		} 
 	},
 
+	/** @type {Object} Sub-namespace for combobox component related functions */
+	combobox: {
+		/**
+		 * A function to get combobox component
+		 *
+		 * Sample usage:
+		 * EJS.combobox.get('reference')
+		 * 
+		 * @param  {String} reference [description]
+		 * @return {Component}           [description]
+		 */
+		get: function(reference) {
+			return this.component.reference('combobox', reference);
+		},
+
+		/**
+		 * A function to setup combobox with store data
+		 *
+		 * Sample usage:
+		 * EJS.combobox.setup('reference', 'url', { key: value })
+		 * 
+		 * @param  {String} reference [description]
+		 * @param  {String} storeUrl  [description]
+		 * @param  {Object} filters   [description]
+		 * @return {[type]}           [description]
+		 */
+		setup: function(reference, storeUrl, filters = {}) {
+			var combobox = this.combobox.get(reference),
+				store = this.store.create(storeUrl, filters, combobox);
+
+			combobox.bindStore(store);
+		},
+
+		/**
+		 * A function to get a record via id from combobox store
+		 *
+		 * Sample usage:
+		 * EJS.combobox.getRecordById('reference', 2)
+		 * 
+		 * @param  {String} reference [description]
+		 * @param  {Number} id        [description]
+		 * @return {[type]}           [description]
+		 */
+		getRecordById: function(reference, id) {
+			return this.combobox.get(reference).findRecord('id', id);
+		},
+	},
+
 	
 }
