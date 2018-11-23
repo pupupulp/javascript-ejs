@@ -461,7 +461,7 @@ EJS.prototype = {
 	},
 
 	/** @type {Object} Sub-namespace for button component related functions */
-	button = {
+	button: {
 		/**
 		 * A function to get button component
 		 *
@@ -499,6 +499,122 @@ EJS.prototype = {
 		 */
 		enable: function(reference) {
 			this.button.get(reference).setDisabled(false);
+		}
+	},
+
+	/** @type {Object} Sub-namespace for renderer related functions */
+	render: {
+		/**
+		 * A function to render default value
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.default()
+		 * 
+		 * @return {[type]} [description]
+		 */
+		default: function(value) {
+			return value;
+		},
+
+		/**
+		 * A function to render yes or no 
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.yesNo()
+		 * 
+		 * @param {Number} value [description]
+		 * @return {String} [description]
+		 */
+		yesNo: function(value) {
+			return value == 1 ? 'Yes' : 'No';
+		},
+
+		/**
+		 * A function to render numeric value as currency
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.currency()
+		 * 
+		 * @param {Number} value [description]
+		 * @return {Number} [description]
+		 */
+		currency: function(value = 0) {
+			return Ext.util.Format.currency(value, ' ', 2, false);
+		},
+
+		/**
+		 * A function to render accurate numeric decimals
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.accurate()
+		 * 
+		 * @param {Number} value [description]
+		 * @return {Number} [description]
+		 */
+		accurate: function(value = 0) {
+			return Ext.util.Format.number(value, '0,0.00##########');
+		},
+
+		/**
+		 * A function to render full date format
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.fullDate()
+		 * 
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
+		 */
+		fullDate: function(value) {
+			return Ext.util.Format.date(value, 'F d, Y');
+		},
+
+		/**
+		 * A function to render year month day date format 
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.YMDDate()
+		 * 
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
+		 */
+		YMDDate: function(value) {
+			return Ext.util.Format.date(value, 'Y-m-d');
+		},
+
+		/**
+		 * A function to render day month year date format 
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.DMYDate()
+		 * 
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
+		 */
+		DMYDate: function(value) {
+			return Ext.util.Format.date(value, 'd-m-Y');
+		},
+
+		/**
+		 * A function to render month day year date format
+		 *
+		 * Sample usage :
+		 * renderer: EJS.render.MDYDate()
+		 * 
+		 * @param {Date} value [description]
+		 * @return {Date}        [description]
+		 */
+		MDYDate: function(value) {
+			return Ext.util.Format.date(value, 'm-d-Y');
+		}
+
+		/**
+		 * A function to render date on a specified format
+		 * @param  {Date} value  [description]
+		 * @param  {String} format [description]
+		 * @return {Date}        [description]
+		 */
+		formatDate: function(value, format = 'm-d-Y') {
+			return Ext.util.Format.date(value, format);
 		}
 	},
 
