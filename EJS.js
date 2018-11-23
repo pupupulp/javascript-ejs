@@ -824,7 +824,7 @@ EJS.prototype.window = {
 	 */
 	getHeight: function() {
 		return Ext.getBody().getViewSize().height;
-	}
+	},
 
 	/**
 	 * A function to get window body's width
