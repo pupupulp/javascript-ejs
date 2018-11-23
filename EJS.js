@@ -618,5 +618,37 @@ EJS.prototype = {
 		}
 	},
 
+	/** @type {Object} Sub-namespace for ajax related functions */
+	ajax: {
+		/**
+		 * A function to handle ajax requests
+		 *
+		 * Sample usage:
+		 * EJS.ajax.request('url', 'GET', { key: value }, function success(){}, function fail() {}, true)
+		 * 
+		 * @param  {String}  url             [description]
+		 * @param  {String}  method          [description]
+		 * @param  {Object}  params          [description]
+		 * @param  {Function}  sucessCallback  [description]
+		 * @param  {Function}  failureCallback [description]
+		 * @param  {Boolean} async           [description]
+		 * @return {[type]}                  [description]
+		 */
+		request: function(url, method, params, sucessCallback, failureCallback, async = true) {
+			return Ext.Ajax.request({
+				async: async,
+				url: url,
+				method: method,
+				params: params,
+				success: function(response) {
+					callback(Ext.decode(reponse.responseText));
+				},
+				failure: function(response){
+					failureCallback();
+				}
+			});
+		}
+	},
+
 	
 }
