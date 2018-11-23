@@ -671,4 +671,20 @@ EJS.prototype = {
 			return query;
 		}
 	},
+
+	/** @type {Object} Sub-namespace for tasks related functions */
+	task: {
+		/**
+		 * A function to create new delayed task that executes a callback function
+		 *
+		 * Sample usage:
+		 * EJS.task.create(function task() {})
+		 * 
+		 * @param  {Function} callback [description]
+		 * @return {[type]}            [description]
+		 */
+		create: function(callback) {
+			return new Ext.util.DelayedTask(callback);
+		}
+	},
 }
