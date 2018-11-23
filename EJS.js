@@ -687,4 +687,129 @@ EJS.prototype = {
 			return new Ext.util.DelayedTask(callback);
 		}
 	},
+
+	/** @type {Object} Sub-namespace for store related functions */
+	store: {
+		/**
+		 * A function to create a store
+		 *
+		 * Sample usage:
+		 * EJS.store.create('url', { key: value }, component, true, 25)
+		 * 
+		 * @param  {String}  url         [description]
+		 * @param  {Object}  extraParams [description]
+		 * @param  {Component}  component   [description]
+		 * @param  {Boolean} autoLoad    [description]
+		 * @param  {Number}  pageSize    [description]
+		 * @return {[type]}              [description]
+		 */
+		create: function(url, extraParams = {}, component, autoLoad = true, pageSize = 25) {
+			if(!url) return;
+
+			return new Ext.data.Store({
+				fields: [],
+				proxy: {
+					extraParams: extraParams,
+					url: url,
+					type: 'ajax',
+					reader: {
+						type: 'json',
+						rootProperty: 'data',
+						totalProperty: 'total'
+					}
+				},
+				pageSize: pageSize,
+				autoLoad: autoLoad,
+				autoDestroy: true,
+				listeners: {
+					metachange: function(store, meta) {
+						store.fields = meta.fields;
+					},
+					load: function(store, records, success) {
+						var message = '<center>Failed to load store data.</center>';
+
+						if(component != undefined) {
+							if(!success) return component.mask(message);
+							else component.unmask();
+						} else return;
+
+						if(store.getTotalCount() <= 0 ||
+							!Ext.isDefined(component.value)) return;
+
+						if(!Ext.Array.contains(store.getFields(), 'is_default')) return;
+						else {
+							var index = store.findExact('is_default', '1');
+
+							if(index < 0) return;
+							else {
+								var value = store.getAt(index).get('id');
+								component.setValue(value);
+							}
+						}
+					}
+				}
+			});
+		},
+
+		/**
+		 * A function to create a tree based store
+		 * 
+		 * Sample usage:
+		 * EJS.store.tree('url', { key: value }, component, true, true)
+		 * 
+		 * @param  {String}  url         [description]
+		 * @param  {Object}  extraParams [description]
+		 * @param  {Component}  component   [description]
+		 * @param  {Boolean} autoLoad    [description]
+		 * @param  {Boolean} folderSort  [description]
+		 * @return {Store}              [description]
+		 */
+		tree: function(url, extraParams = {}, component, autoLoad = true, folderSort = true) {
+			return new Ext.data.TreeStore({
+				proxy: {
+					extraParams: extraParams,
+					url: url,
+					type: 'ajax',
+					reader: {
+						type: 'json',
+						root: 'children'
+					}
+				},
+				root: {
+					text: '.',
+					expandable: false,
+				},
+				autoLoad: autoLoad,
+				folderSort: folderSort,
+				listeners: {
+					load: function(store, records, success) {
+						var message = '<center>Failed to load store data.</center>';
+
+						if(component != undefined) {
+							if(!success) return component.mask(message);
+							else component.unmask();
+						} else return;
+					}
+				}
+			});
+		},
+
+		/**
+		 * A function to create a store via defined records
+		 *
+		 * Sample usage:
+		 * EJS.store.local([])
+		 * 
+		 * @param  {Array} records [description]
+		 * @return {Store}         [description]
+		 */
+		local: function(records) {
+			var keys = Object.keys(records[0]);
+
+			return Ext.create('Ext.data.Store', {
+				fields: keys,
+				data: records
+			});
+		},
+	},
 }
