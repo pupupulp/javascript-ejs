@@ -11,6 +11,12 @@
 var EJS = function() {}
 EJS.prototype = {}
 
+EJS.prototype.class = {
+	defaults: function(className) {
+		return _app.getMainClass() + '.defaults.' + className;
+	}
+}
+
 /** @type {Object} Sub-namespace for component related functions */
 EJS.prototype.component = {
 	/**
