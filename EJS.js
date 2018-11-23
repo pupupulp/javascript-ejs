@@ -650,5 +650,25 @@ EJS.prototype = {
 		}
 	},
 
-	
+	/** @type {Object} Sub-namespace for URL related functions */
+	url: {
+		/**
+		 * A function to convert object params as query for url params
+		 *
+		 * Sample usage:
+		 * EJS.url.covertObjectToQuery({ key: value })
+		 * 
+		 * @param  {Object} params [description]
+		 * @return {String}        [description]
+		 */
+		convertObjectToQuery: function(params) {
+			var query = "";
+
+			Ext.object.each(params, function(key, value) {
+				query += encodeURIComponent(key)+'='+encodeURIComponent(value)+'&';
+			});
+
+			return query;
+		}
+	},
 }
